@@ -1,0 +1,12 @@
+%% -*- erlang -*-
+{application, ticktick,
+ [{description, "ticktick"},
+  {vsn, "0.1"},
+  {modules, []},
+  {registered, []},
+  {mod, {'ticktick_app', []}},
+  {env, [
+		{ip, "0.0.0.0"},
+		{port, 8080}
+		]},
+  {applications, [kernel, stdlib, crypto]}]}.
