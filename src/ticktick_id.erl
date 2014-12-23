@@ -35,7 +35,7 @@ id() ->
 
 id_hex() ->
 	{ok, IdBin} = id(),
-	lists:flatten([io_lib:format("~2.16.0B",[X]) || <<X:8>> <= IdBin ]).	
+	hex:bin_to_hexstr(IdBin).
 
 sibling( IdBin ) ->
 	%% simply retrieve the next related id at the same time of Id,

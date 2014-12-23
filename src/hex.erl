@@ -1,3 +1,8 @@
+%%
+%% Convert utilities between binary and hex string by @Necrobious
+%% http://necrobious.blogspot.com/2008/03/binary-to-hex-string-back-to-binary-in.html
+%%
+
 -module(hex).
 -export([bin_to_hexstr/1,hexstr_to_bin/1]).
 
