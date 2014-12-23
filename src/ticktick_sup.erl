@@ -42,7 +42,8 @@ upgrade() ->
 %% @doc supervisor callback.
 init([]) ->
     Web = web_specs(ticktick_web, 8080),
-    Processes = [Web],
+	Id = id_specs(),
+    Processes = [Web, Id],
     Strategy = {one_for_one, 10, 10},
     {ok,
      {Strategy, lists:flatten(Processes)}}.
@@ -58,6 +59,11 @@ web_specs(Mod, DefaultPort) ->
      {Mod, start, [WebConfig]},
      permanent, 5000, worker, dynamic}.
 
+id_specs() ->
+	MachineId = get_app_env( machine_id, 0 ),
+	{ticktick_id,
+	 {ticktick_id, start_link, [MachineId]},
+	 permanent, 1000, worker, [ticktick_id]}. %% 1000 timeout to prevent ids-mixed
 
 get_app_env( Key, DefaultValue ) ->
 	case application:get_env( ticktick, Key ) of
