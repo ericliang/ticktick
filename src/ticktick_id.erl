@@ -7,6 +7,7 @@
 		 id/0,
 		 id_hex/0,
 		 sibling/1,
+         set_machine_id/1,
 		 explain/1]).
 
 -export([init/1,
@@ -32,6 +33,9 @@ stop() ->
 
 id() ->
 	gen_server:call(?PROCNAME, id).
+
+set_machine_id(MachineId) ->
+    gen_server:call(?PROCNAME, {machine_id, MachineId}).
 
 id_hex() ->
 	{ok, IdBin} = id(),
@@ -88,7 +92,12 @@ handle_call(id, _From, #state{ space_time = SpaceTime, sequence = Seq } = State)
 		_ ->
 			TTID = to_ttid( Ver, SpaceTime1, Seq1, MID, ?TTID_TAG_NORMAL),
 			{reply, ttid_to_bin(TTID), State1}
-	end.
+	end;
+
+handle_call({machine_id, MachineId}, _From, State) ->
+    NewState = State#state{machine_id = MachineId},
+    ?INFO("Ticktick set to run on macine : ~p ~n", [MachineId]),
+    {reply, ok, NewState}.
 
 handle_cast(stop, State) ->
     {stop, normal, State};
